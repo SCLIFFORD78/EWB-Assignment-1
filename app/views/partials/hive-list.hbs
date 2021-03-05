@@ -1,0 +1,25 @@
+<div class="uk-margin uk-width-2xlarge uk-margin-auto uk-card uk-card-default uk-card-body uk-box-shadow-large">
+  <table class="uk-table">
+    <caption>
+      Hives to Date
+    </caption>
+    <thead class="uk-text-left">
+      <th>Hive Number</th>
+      <th>Location</th>
+      <th>hive id - select for more info</th>
+    </thead>
+    <tbody class="uk-text-left">
+      {{#each hives}}
+      <form class="uk-form-stacked uk-text-left" action="/hive-info" method="POST">
+        <tr>
+          <td> {{hiveNumber}} </td>
+          <td> {{location}} </td>
+          <td>
+            <input type="submit" class="uk-button uk-button-primary" value={{_id}} name="id">
+          </td>
+        </tr>
+      </form>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

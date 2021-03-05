@@ -1,5 +1,7 @@
 "use strict";
 
+
+
 const Hapi = require("@hapi/hapi");
 const Inert = require("@hapi/inert");
 const Vision = require("@hapi/vision");
@@ -8,6 +10,8 @@ const Cookie = require("@hapi/cookie");
 require('./app/models/db');
 const env = require('dotenv');
 const Joi = require("@hapi/joi");
+
+
 
 env.config();
 

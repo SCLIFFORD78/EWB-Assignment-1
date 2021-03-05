@@ -1,0 +1,16 @@
+<div class="uk-flex uk-flex-center uk-flex-middle uk-grid-small" uk-grid>
+  {{> title-card title="Selected Hive" subTitle="Detailed Information"}}
+  {{> main-menu }}
+</div>
+
+<div class="uk-container uk-margin">
+  <div class="uk-child-width-expand uk-flex-center uk-flex-middle uk-text-center" uk-grid>
+    <div class="uk-width-expand@m">
+      {{> hive-info}}
+    </div>
+    <div class="uk-width-auto@m">
+      <img width="300" src="images/hive.jpg">
+    </div>
+    {{> error }}
+  </div>
+</div>
