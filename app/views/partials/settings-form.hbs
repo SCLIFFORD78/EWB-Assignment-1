@@ -26,5 +26,11 @@
   <div class="uk-margin">
     <button class="uk-button uk-button-primary uk-button-large uk-width-1-1">Save </button>
   </div>
-</form>
+  </form>
+  <form action="/deleteAccount" method="POST">
+    <div class="uk-margin">
+    <button class="uk-button uk-button-danger uk-button-large uk-width-1-1">Delete Account </button>
+    <input type="hidden" name="deleteAccount" value="true" type="text">
+  </div>
+  </form>
 {{> error }}

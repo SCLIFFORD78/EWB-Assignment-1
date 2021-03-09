@@ -12,12 +12,14 @@ module.exports = [
   { method: "POST", path: "/login", config: Accounts.login },
   { method: 'GET', path: '/settings', config: Accounts.showSettings },
   { method: 'POST', path: '/settings', config: Accounts.updateSettings },
+  { method: 'POST', path: '/deleteAccount', config: Accounts.deleteAccount },
 
   { method: "GET", path: "/home", config: Hives.home },
   { method: "POST", path: "/addHive", config: Hives.addHive },
   { method: "GET", path: "/maps", config: Hives.maps },
   { method: "POST", path: "/hive-info", config: Hives.hiveInfo },
   { method: "POST", path: "/addComment", config: Hives.addComments },
+  { method: "POST", path: "/deleteHive", config: Hives.deleteHive },
 
   {
     method: "GET",

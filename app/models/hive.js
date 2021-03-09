@@ -7,7 +7,8 @@ const Schema = Mongoose.Schema;
 const hiveSchema = new Schema({
   added: { type: Date, default: Date.now },
   hiveNumber: Number,
-  location: String,
+  latitude: Number,
+  longtitude: Number,
   hiveType: String,
   description: String,
   details: [{comments: String, dateLogged: { type: Date, default: Date.now }}],

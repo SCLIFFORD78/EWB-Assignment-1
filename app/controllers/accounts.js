@@ -156,6 +156,22 @@ const Accounts = {
       }
     },
   },
+  deleteAccount: {
+    handler: async function (request, h) {
+      try {
+        const userEdit = request.payload;
+        const id = request.auth.credentials.id;
+        const user = await User.findById(id);
+        console.log("This Account will get deleted " + user.email);
+        user.remove();
+        
+
+        return h.redirect("/main");
+      } catch (err) {
+        return h.view("main", { errors: [{ message: err.message }] });
+      }
+    },
+  },
 };
 
 module.exports = Accounts;
