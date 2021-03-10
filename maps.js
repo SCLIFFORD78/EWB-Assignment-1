@@ -1,6 +1,4 @@
-<div class="uk-margin uk-card uk-card-body uk-height-large uk-box-shadow-large" id="map1"></div>
 
-<script >
 
 var map = L.map("map1").setView([52.05102, -9.6871], 11);
 L.tileLayer("https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=m3Lj5QIcWzzqBkEBCk7v", {
@@ -20,7 +18,3 @@ function onMapClick(e) {
 }
 
 map.on("click", onMapClick);
-
-   
-
-</script>

@@ -20,6 +20,8 @@ module.exports = [
   { method: "POST", path: "/hive-info", config: Hives.hiveInfo },
   { method: "POST", path: "/addComment", config: Hives.addComments },
   { method: "POST", path: "/deleteHive", config: Hives.deleteHive },
+  { method: 'GET', path: '/images/{id}', config: Hives.images },
+  { method: 'GET', path: '/deleteimage/{folder}/{id}', config: Hives.deleteImage },
 
   {
     method: "GET",
