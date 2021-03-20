@@ -1,0 +1,19 @@
+<div class="uk-flex uk-flex-center uk-flex-middle uk-grid-large" uk-grid>
+  {{> title-card title="Hive logging Services" subTitle="Your details..."}}
+  {{> main-menu }}
+</div>
+
+<div class="uk-flex uk-flex-center uk-flex-middle uk-grid-large" uk-grid>
+
+
+    <div class="uk-child-width-expand@s uk-text-center">
+      <h3 class="uk-card-title uk-text-center">Member Number {{user.memberNumber}} :</h3>
+      {{> settings-form}}
+    </div>
+    <div class="uk-child-width-large uk-text-center">
+      <h3 class="uk-child-width-expand@s uk-text-center">Member Details: </h3>
+      {{> admin-settings-form}}
+    </div>
+
+
+</div>

@@ -13,14 +13,18 @@ module.exports = [
   { method: 'GET', path: '/settings', config: Accounts.showSettings },
   { method: 'POST', path: '/settings', config: Accounts.updateSettings },
   { method: 'POST', path: '/deleteAccount', config: Accounts.deleteAccount },
+  { method: 'POST', path: '/toggleAdmin', config: Accounts.toggleAdmin },
+  { method: 'POST', path: '/adminDeleteAccount/{id}', config: Accounts.adminDeleteAccount },
 
   { method: "GET", path: "/home", config: Hives.home },
   { method: "POST", path: "/addHive", config: Hives.addHive },
   { method: "GET", path: "/maps", config: Hives.maps },
+  { method: "POST", path: "/maps", config: Hives.maps },
   { method: "POST", path: "/hive-info", config: Hives.hiveInfo },
   { method: "POST", path: "/addComment", config: Hives.addComments },
+  { method: "POST", path: "/deleteComment/{id}", config: Hives.deleteComment },
   { method: "POST", path: "/deleteHive", config: Hives.deleteHive },
-  { method: 'GET', path: '/images/{id}', config: Hives.images },
+  { method: 'GET', path: '/gallery/{id}', config: Hives.gallery },
   { method: 'GET', path: '/deleteimage/{folder}/{id}', config: Hives.deleteImage },
 
   {

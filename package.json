@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -20,7 +21,9 @@
     "dotenv": "^8.2.0",
     "handlebars": "^4.7.7",
     "leaflet": "^1.7.1",
-    "mongoose": "^5.11.19"
+    "mais-mongoose-seeder": "^1.0.7",
+    "mongoose": "^5.11.19",
+    "mongoose-auto-increment": "^5.0.1"
   },
   "devDependencies": {
     "prettier": "^2.2.1"

@@ -3,9 +3,23 @@
     <caption>
       Hives to Date
     </caption>
+    <form class="uk-form-stacked uk-text-left" action="/maps" method="POST">
+      <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+        <p class="uk-text-bold">{{filter}}</p>
+        <label><input class="uk-radio" type="radio" name="Super"> Super</label>
+        <label><input class="uk-radio" type="radio" name="National"> National</label>
+        <label><input class="uk-radio" type="radio" name="All"> All</label>
+        
+      </div>
+      
+      <div class="uk-margin uk-text-right">
+        <button class="submit uk-button uk-button-primary uk-button-small uk-width-1-1">Filter Hive Catagory</button>
+      </div>
+    </form>
     <thead class="uk-text-left">
       <th>Hive Number</th>
-      <th>Location</th>
+      <th>Category</th>
+      <th>Owner</th>
       <th>hive id - select for more info</th>
     </thead>
     <tbody class="uk-text-left">
@@ -13,9 +27,11 @@
       <form class="uk-form-stacked uk-text-left" action="/hive-info" method="POST">
         <tr>
           <td> {{hiveNumber}} </td>
-          <td> {{location}} </td>
+          <td> {{hiveType}} </td>
+          <td> {{owner.firstName}} {{owner.lastName}} </td>
           <td>
-            <input type="submit" class="uk-button uk-button-primary" value={{_id}} name="id">
+            <button class="submit uk-button uk-button-primary uk-button-small uk-width-1-1">Select </button>
+            <input type="hidden" class="uk-button uk-button-primary" value={{_id}} name="id">
           </td>
         </tr>
       </form>

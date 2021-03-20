@@ -1,12 +1,12 @@
 "use strict";
 
 const Mongoose = require("mongoose");
+var autoIncrement = require('mongoose-auto-increment');
 const Schema = Mongoose.Schema;
 
 
 const hiveSchema = new Schema({
   added: { type: Date, default: Date.now },
-  hiveNumber: Number,
   latitude: Number,
   longtitude: Number,
   hiveType: String,
@@ -17,6 +17,8 @@ const hiveSchema = new Schema({
     ref: "User",
   }
 });
+hiveSchema.plugin(autoIncrement.plugin, {model: 'Hive', field:'hiveNumber'});
+
 
 module.exports = Mongoose.model("Hive", hiveSchema);
 
