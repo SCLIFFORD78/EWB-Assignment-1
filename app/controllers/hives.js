@@ -2,6 +2,7 @@
 const Hive = require("../models/hive");
 const User = require("../models/user");
 const Cloudinary = require("../utils/cloudinary");
+const Weather = require("../utils/weather");
 const { Exception } = require("handlebars");
 
 const Hives = {
@@ -72,13 +73,15 @@ const Hives = {
 
   hiveInfo: {
     handler: async function (request, h) {
+      
       const data = request.payload;
       console.log(data);
       const { id } = request.payload;
 
       try {
         const hive = await Hive.findById(id).lean();
-        return h.view("hive-detail", { title: "Hive Detailed Records", hive: hive });
+        const weather = await Weather.fetchWeather(hive.latitude, hive.longtitude);
+        return h.view("hive-detail", { title: "Hive Detailed Records", hive: hive , weather: weather});
       } catch (err) {
         return h.view("hive-detail", { errors: [{ message: err.message }] });
       }

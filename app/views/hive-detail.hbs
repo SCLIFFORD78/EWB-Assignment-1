@@ -5,8 +5,14 @@
 
 <div class="uk-container uk-container-xlarge uk-margin">
   <div>
-    <div class="uk-card uk-card-default uk-card-hover uk-card-body uk-margin">
+    <div class="uk-card uk-card-default uk-card-hover uk-card-body uk-margin uk-column-1-4">
       <h3 class="uk-card-title">Hive Number: {{hive.hiveNumber}}</h3>
+      <p>FeelsLike: {{weather.feelsLike}} Celcus</p>
+      <p>Cloud Cover: {{weather.clouds}}</p>
+      <p>Wind Speed: {{weather.windSpeed}} Kph</p>
+      <p>Wind Direction: {{weather.windDirection}} Deg.</p>
+      <p>Visibility: {{weather.visibility}} km</p>
+      <p>Humidity: {{weather.humidity}}%</p>
       {{> error }}
     </div>
   </div>
