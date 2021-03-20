@@ -6,6 +6,7 @@ const Weather = require("../utils/weather");
 const { Exception } = require("handlebars");
 
 const Hives = {
+  
   home: {
     handler: function (request, h) {
       return h.view("home", { title: "Make a Donation" });
@@ -75,7 +76,7 @@ const Hives = {
     handler: async function (request, h) {
       
       const data = request.payload;
-      console.log(data);
+
       const { id } = request.payload;
 
       try {
