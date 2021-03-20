@@ -4,8 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+<<<<<<< HEAD
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
+=======
+    "test": "echo \"Error: no test specified\" && exit 1",
+     "start": "node index.js"
+>>>>>>> d92ed6c9482674753981636863c5e831d3bed656
   },
   "author": "",
   "license": "ISC",
@@ -31,5 +36,8 @@
   },
   "prettier": {
     "printWidth": 120
+  },
+  "engines": {
+    "node": "^12.6.1"
   }
 }
