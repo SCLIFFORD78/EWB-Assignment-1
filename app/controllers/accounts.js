@@ -2,8 +2,6 @@
 const User = require("../models/user");
 const Boom = require("@hapi/boom");
 const Joi = require('@hapi/joi');
-const Analytics = require("../utils/analytics");
-const { report } = require("../utils/analytics");
 
 const Accounts = {
   index: {
@@ -116,11 +114,10 @@ const Accounts = {
         const id = request.auth.credentials.id;
         const user = await User.findById(id).lean();
         const allUsers = await User.find({}).lean();
-        const report =  await Analytics.report();
         if(!user.admin){
           return h.view("settings", { title: "Account Settings", user: user });}
         else {
-          return h.view("admin-settings", { title: "Account Admin Settings", user: user , allUsers: allUsers,report: report});}
+          return h.view("admin-settings", { title: "Account Admin Settings", user: user , allUsers: allUsers});}
       } catch (err) {
         return h.view("login", { errors: [{ message: err.message }] });
       }
@@ -189,8 +186,8 @@ const Accounts = {
         console.log("This Account will get deleted " + member.email);
         member.remove();
         const allUsers = await User.find({}).lean();
-        const report =  await Analytics.report();
-        return h.view("admin-settings", { title: "Account Admin Settings", user: user , allUsers: allUsers,report: report});
+
+        return h.view("admin-settings", { title: "Account Admin Settings", user: user , allUsers: allUsers});
       } catch (err) {
         return h.view("main", { errors: [{ message: err.message }]});
       }
@@ -203,7 +200,6 @@ const Accounts = {
         const adminId = request.auth.credentials.id;
         const user = await User.findById(adminId).lean();
         const member = await User.findById(_id).lean();
-        
         if (member.admin){
           member.admin = false;
         }
@@ -214,14 +210,13 @@ const Accounts = {
         let adminRights = await User.findOneAndUpdate(filter,update,{new: true});
         console.log("Member " + member.email + " Has admin rights updated");
         const allUsers = await User.find({}).lean();
-        const report =  await Analytics.report();
-        return h.view("admin-settings", { title: "Account Admin Settings", user: user , allUsers: allUsers, report: report});
+
+        return h.view("admin-settings", { title: "Account Admin Settings", user: user , allUsers: allUsers});
       } catch (err) {
         return h.view("main", { errors: [{ message: err.message }]});
       }
     },
   },
-
 };
 
 module.exports = Accounts;
