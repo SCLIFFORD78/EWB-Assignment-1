@@ -33,11 +33,11 @@ async function seed() {
   const data = require('./seed-data.json');
   const Hive = require('./hive');
   const User = require('./user');
-  const dbData = await seeder.seed(data, { dropDatabase: false, dropCollections: false });
+  const dbData = await seeder.seed(data, { dropDatabase: false, dropCollections: true });
   console.log(dbData);
 }
 
-db.once('open', function () {
+/* db.once('open', function () {
   console.log(`database connected to ${this.name} on ${this.host}`);
   seed();
-});
+}); */
