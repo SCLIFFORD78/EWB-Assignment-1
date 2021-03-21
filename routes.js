@@ -24,9 +24,11 @@ module.exports = [
   { method: "POST", path: "/addComment", config: Hives.addComments },
   { method: "POST", path: "/deleteComment/{id}", config: Hives.deleteComment },
   { method: "POST", path: "/deleteHive", config: Hives.deleteHive },
+  { method: "POST", path: "/editLocation", config: Hives.editLocation },
+  { method: "POST", path: "/updateLocation", config: Hives.updateLocation },
   { method: 'GET', path: '/gallery/{id}', config: Hives.gallery },
   { method: 'GET', path: '/deleteimage/{folder}/{id}', config: Hives.deleteImage },
-
+  
   {
     method: "GET",
     path: "/{param*}",

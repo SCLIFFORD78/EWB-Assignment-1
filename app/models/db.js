@@ -10,6 +10,7 @@ var autoIncrement = require('mongoose-auto-increment');
 Mongoose.set("useNewUrlParser", true);
 Mongoose.set("useUnifiedTopology", true);
 Mongoose.set('useFindAndModify', false);
+Mongoose.set('useCreateIndex', true);
 
 Mongoose.connect(process.env.db);
 const db = Mongoose.connection;

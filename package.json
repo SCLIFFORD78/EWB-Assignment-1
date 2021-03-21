@@ -23,7 +23,8 @@
     "handlebars": "^4.7.7",
     "leaflet": "^1.7.1",
     "mais-mongoose-seeder": "^1.0.7",
-    "mongoose": "^5.11.19",
+    "mongodb": "^3.6.5",
+    "mongoose": "^5.12.1",
     "mongoose-auto-increment": "^5.0.1"
   },
   "devDependencies": {

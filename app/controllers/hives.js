@@ -4,6 +4,7 @@ const User = require("../models/user");
 const Cloudinary = require("../utils/cloudinary");
 const Weather = require("../utils/weather");
 const { Exception } = require("handlebars");
+const Joi = require('@hapi/joi');
 
 const Hives = {
   
@@ -43,6 +44,27 @@ const Hives = {
     },
   },
   addHive: {
+    validate: {
+      payload: {
+        comments: Joi.string().required(),
+        description: Joi.string().required(),
+        latitude: Joi.number().required(),
+        longtitude: Joi.number().required().negative(),
+        radio2: Joi.any()
+      },
+      options: {
+        abortEarly: false,
+      },
+      failAction: function (request, h, error) {
+        return h
+          .view("home", {
+            title: "Sign in error",
+            errors: error.details,
+          })
+          .takeover()
+          .code(400);
+      },
+    },
     handler: async function (request, h) {
       try {
         const id = request.auth.credentials.id;
@@ -56,7 +78,7 @@ const Hives = {
           hiveType: hiveType,
           description: data.description,
           owner: user._id,
-          details: { comments: data.details },
+          details: { comments: data.comments },
         });
         await newHive.save();
         var _id = newHive._id.toString();
@@ -144,20 +166,19 @@ const Hives = {
       const loggedInUser = await User.findById(loggedInUserID).lean();
       const { deleteHive } = request.payload;
       const hive = await Hive.findById(deleteHive);
-      const test1 = hive.owner.toString();
       if (hive.owner.toString() == loggedInUserID || loggedInUser.admin) {
         try {
-          await Cloudinary.deleteUploadPreset(test);
+          await Cloudinary.deleteUploadPreset(deleteHive);
         } catch (error) {
           console.log(error);
         }
         try {
-          await Cloudinary.deleteResourcesByPrefix(test);
+          await Cloudinary.deleteResourcesByPrefix(deleteHive);
         } catch (error) {
           console.log(error);
         }
         try {
-          await Cloudinary.deleteFolder(test);
+          await Cloudinary.deleteFolder(deleteHive);
         } catch (error) {
           console.log(error);
         }
@@ -170,6 +191,60 @@ const Hives = {
         }
       } else {
         return h.view("home", { errors: [{ message: "No Authority to delete. Must be owner or admin!" }] });
+      }
+    },
+  },
+  editLocation: {
+    handler: async function (request, h) {
+      try {
+        const {id} = request.payload;
+        const loggedInUserID = request.auth.credentials.id;
+        const loggedInUser = await User.findById(loggedInUserID).lean();
+        const hive = await Hive.findById(id).lean();
+        if ((hive.owner.toString() == loggedInUserID) || loggedInUser.admin) {
+
+          return h.view("updateHiveLocation", { title: "Update Hive Location", hive: hive });
+        } else {
+          return h.redirect("/maps", { errors: [{ message: 'Only Hive owner or Admin can edit Hive Location' }] });
+        }
+      } catch (err) {
+        return h.redirect("/maps", { errors: [{ message: err.message }] });
+      }
+    },
+  },
+  updateLocation: {
+    validate: {
+      payload: {
+        latitude: Joi.number().required(),
+        longtitude: Joi.number().required().negative(),
+        id: Joi.any()
+      },
+      options: {
+        abortEarly: false,
+      },
+      failAction: function (request, h, error) {
+        const {id} = request.payload;
+        return h
+          .view("updateHiveLocation", {
+            errors: error.details,
+            id: id
+          })
+          .takeover()
+          .code(400);
+      },
+    },
+    handler: async function (request, h) {
+      try {
+        const {id} = request.payload;
+        const {longtitude} = request.payload;
+        const {latitude} = request.payload;
+
+        const update = { longtitude: longtitude,latitude: latitude};
+        const hive = await Hive.findByIdAndUpdate(id,update,{ new: true }).lean();
+
+        return h.redirect("/maps");
+      } catch (err) {
+        return h.redirect("/maps", { errors: [{ message: err.message }] });
       }
     },
   },
