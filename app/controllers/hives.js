@@ -70,8 +70,8 @@ const Hives = {
         const id = request.auth.credentials.id;
         const user = await User.findById(id).lean();
         const data = request.payload;
-        var hiveType = "Super";
-        if (data.radio2 == "on") hiveType = "National";
+        var hiveType = "National";
+        if (data.radio2 == "on") hiveType = "Super";
         const newHive = new Hive({
           latitude: data.latitude,
           longtitude: data.longtitude,
