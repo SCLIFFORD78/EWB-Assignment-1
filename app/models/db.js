@@ -33,7 +33,7 @@ async function seed() {
   const data = require('./seed-data.json');
   const Hive = require('./hive');
   const User = require('./user');
-  const dbData = await seeder.seed(data, { dropDatabase: false, dropCollections: true });
+  const dbData = await seeder.seed(data, { dropDatabase: false, dropCollections: false });
   console.log(dbData);
 }
 
