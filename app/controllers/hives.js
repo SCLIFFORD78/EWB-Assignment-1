@@ -96,9 +96,6 @@ const Hives = {
 
   hiveInfo: {
     handler: async function (request, h) {
-      
-      const data = request.payload;
-
       const { id } = request.payload;
 
       try {
@@ -120,7 +117,8 @@ const Hives = {
         hive.details.push({ comments: data.details });
         await hive.save();
         const hiveUpdates = await Hive.findById(id).lean();
-        return h.view("hive-detail", { title: "Hive Detailed Records", hive: hiveUpdates });
+        const weather = await Weather.fetchWeather(hive.latitude, hive.longtitude);
+        return h.view("hive-detail", { title: "Hive Detailed Records", hive: hiveUpdates, weather: weather });
       } catch (err) {
         return h.view("hive-detail", { errors: [{ message: err.message }] });
       }
@@ -130,12 +128,14 @@ const Hives = {
     handler: async function (request, h) {
       const { _id } = request.payload;
       var hive1 = '';
+      var weather = '';
       try {
         const loggedInUserID = request.auth.credentials.id;
         const loggedInUser = await User.findById(loggedInUserID).lean();
         const hive = await Hive.find({ "details._id": _id }).lean();
         const hiveID = hive[0]["_id"].toString();
         hive1 = await Hive.findById(hiveID).lean();
+        weather = await Weather.fetchWeather(hive1.latitude, hive1.longtitude);
         if (hive1.owner.toString() == loggedInUserID || loggedInUser.admin) {
           var details = hive1.details;
           var newDetails = [];
@@ -146,16 +146,17 @@ const Hives = {
           const update = { details: newDetails };
           let newComments = await Hive.findOneAndUpdate(filter, update, { new: true });
           const hive2 = await Hive.findById(hiveID).lean();
-          return h.view("hive-detail", { title: "Hive Detailed Records", hive: hive2 });
+          return h.view("hive-detail", { title: "Hive Detailed Records", hive: hive2, weather: weather });
         } else {
           return h.view("hive-detail", {
             title: "Hive Detailed Records",
             errors: [{ message: "No Authority to delete. Must be owner or admin!" }],
             hive: hive1,
+            weather: weather
           });
         }
       } catch (err) {
-        return h.view("hive-detail", { errors: [{ message: err.message }], hive: hive1 });
+        return h.view("hive-detail", { errors: [{ message: err.message }], hive: hive1, weather: weather });
       }
     },
   },
