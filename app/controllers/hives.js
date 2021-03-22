@@ -20,20 +20,20 @@ const Hives = {
       var filter = "";
       if (response)
         if (response["National"] == "on" && response["Super"] == "on") {
-          hives = await Hive.find().lean();
+          hives = await Hive.find().populate("owner").lean();
           filter = "ALL Catagories displayed. Select hive type to filter";
         } else if (response["National"] == "on") {
-          hives = await Hive.find({ hiveType: "National" }).lean();
+          hives = await Hive.find({ hiveType: "National" }).populate("owner").lean();
           filter = "NATIONAL HIVES displayed. Select hive type to filter";
         } else if (response["Super"] == "on") {
-          hives = await Hive.find({ hiveType: "Super" }).lean();
+          hives = await Hive.find({ hiveType: "Super" }).populate("owner").lean();
           filter = "SUPER HIVES displayed. Select hive type to filter";
         } else {
-          hives = await Hive.find({}).lean();
+          hives = await Hive.find().populate("owner").lean();
           filter = "ALL Catagories displayed. Select hive type to filter";
         }
       else {
-        hives = await Hive.find({}).lean();
+        hives = await Hive.find().populate("owner").lean();
         filter = "ALL Catagories displayed. Select hive type to filter";
       }
       return h.view("maps", {
@@ -241,8 +241,8 @@ const Hives = {
         const {latitude} = request.payload;
 
         const update = { longtitude: longtitude,latitude: latitude};
-        await Hive.findByIdAndUpdate(id,update,{ new: true });
-        Hive.save();
+        const hive = await Hive.findByIdAndUpdate(id,update,{ new: true }).lean();
+
         return h.redirect("/maps");
       } catch (err) {
         return h.redirect("/maps", { errors: [{ message: err.message }] });
