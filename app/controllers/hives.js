@@ -20,7 +20,7 @@ const Hives = {
       var filter = "";
       if (response)
         if (response["National"] == "on" && response["Super"] == "on") {
-          hives = await Hive.find().lean();
+          hives = await Hive.find({}).lean();
           filter = "ALL Catagories displayed. Select hive type to filter";
         } else if (response["National"] == "on") {
           hives = await Hive.find({ hiveType: "National" }).lean();
