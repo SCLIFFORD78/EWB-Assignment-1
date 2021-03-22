@@ -23,17 +23,17 @@ const Hives = {
           hives = await Hive.find({}).lean();
           filter = "ALL Catagories displayed. Select hive type to filter";
         } else if (response["National"] == "on") {
-          hives = await Hive.find({ hiveType: "National" }).populate("owner").lean();
+          hives = await Hive.find({ hiveType: "National" }).lean();
           filter = "NATIONAL HIVES displayed. Select hive type to filter";
         } else if (response["Super"] == "on") {
-          hives = await Hive.find({ hiveType: "Super" }).populate("owner").lean();
+          hives = await Hive.find({ hiveType: "Super" }).lean();
           filter = "SUPER HIVES displayed. Select hive type to filter";
         } else {
-          hives = await Hive.find().populate("owner").lean();
+          hives = await Hive.find({}).lean();
           filter = "ALL Catagories displayed. Select hive type to filter";
         }
       else {
-        hives = await Hive.find().populate("owner").lean();
+        hives = await Hive.find({}).lean();
         filter = "ALL Catagories displayed. Select hive type to filter";
       }
       return h.view("maps", {
