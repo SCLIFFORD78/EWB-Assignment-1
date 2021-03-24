@@ -100,6 +100,9 @@ const Hives = {
 
       try {
         const hive = await Hive.findById(id).lean();
+        for (var i = 0; i < hive.details.length;i++){
+          hive.details[i].dateLogged = hive.details[i].dateLogged.toDateString()
+        };
         const weather = await Weather.fetchWeather(hive.latitude, hive.longtitude);
         return h.view("hive-detail", { title: "Hive Detailed Records", hive: hive , weather: weather});
       } catch (err) {
