@@ -5,7 +5,7 @@
             "firstName": "john",
             "lastName": "clifford",
             "email": "jclifford@gmail.com",
-            "password": "1234",
+            "password": "$2b$10$.6MYa3xebXM5j24ldPmZx.HbHpuStP0fNlWn/1dFcecUxe39.btcO",
             "memberNumber": 0
         },
         "admin": {
@@ -13,7 +13,7 @@
             "firstName": "admin",
             "lastName": "admin",
             "email": "admin@admin.com",
-            "password": "1234",
+            "password": "$2b$10$.6MYa3xebXM5j24ldPmZx.HbHpuStP0fNlWn/1dFcecUxe39.btcO",
             "memberNumber": 1
         },
         "homer": {
@@ -21,7 +21,7 @@
             "firstName": "homer",
             "lastName": "Simpson",
             "email": "homer@simpson.com",
-            "password": "1234",
+            "password": "$2b$10$.6MYa3xebXM5j24ldPmZx.HbHpuStP0fNlWn/1dFcecUxe39.btcO",
             "memberNumber": 2
         },
         "marge": {
@@ -29,7 +29,7 @@
             "firstName": "Marge",
             "lastName": "Simpson",
             "email": "marge@simpson.com",
-            "password": "1234",
+            "password": "$2b$10$.6MYa3xebXM5j24ldPmZx.HbHpuStP0fNlWn/1dFcecUxe39.btcO",
             "memberNumber": 3
         }
     },

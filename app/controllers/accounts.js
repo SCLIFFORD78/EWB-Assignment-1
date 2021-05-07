@@ -1,22 +1,35 @@
 "use strict";
 const User = require("../models/user");
 const Boom = require("@hapi/boom");
-const Joi = require('@hapi/joi');
+const Joi = require("@hapi/joi");
 const Analytics = require("../utils/analytics");
 const { report } = require("../utils/analytics");
+const nodemailer = require("../utils/nodemailer.config");
+const auth = require("../utils/auth.config");
+
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
+
+const characters = "3PDQU5T2elyDBwtYlbc7kiRx5o2sLQyw";
+var jwt = require("jsonwebtoken");
+let token = "";
+for (let i = 0; i < 2; i++) {
+  token += characters[Math.floor(Math.random() * characters.length)];
+}
+
 //
 const Accounts = {
   index: {
     auth: false,
-    handler: function(request, h) {
+    handler: function (request, h) {
       return h.view("main", { title: "Welcome to hives" });
-    }
+    },
   },
   showSignup: {
     auth: false,
-    handler: function(request, h) {
+    handler: function (request, h) {
       return h.view("signup", { title: "Sign up for hives" });
-    }
+    },
   },
   signup: {
     auth: false,
@@ -48,25 +61,37 @@ const Accounts = {
           const message = "Email address is already registered";
           throw Boom.badData(message);
         }
+
+        const hash = await bcrypt.hash(payload.password, saltRounds);
+        const token = jwt.sign({ email: payload.email }, auth.secret);
         const newUser = new User({
           firstName: payload.firstName,
           lastName: payload.lastName,
           email: payload.email,
-          password: payload.password,
+          password: hash,
+          confirmationCode: token,
         });
+
+        const res = nodemailer.sendConfirmationEmail(newUser.firstName, newUser.email, token);
+
         user = await newUser.save();
-        request.cookieAuth.set({ id: user.id });
+        
+        if (user.status != "Active") {
+          const message= "Pending Account. Please Verify Your Email!";
+          throw Boom.unauthorized(message);
+        };
         return h.redirect("/home");
       } catch (err) {
-        return h.view("signup", { errors: [{ message: err.message }] });
+        return h.view("login", { errors: [{ message: err.message }] });
       }
+      
     },
   },
   showLogin: {
     auth: false,
-    handler: function(request, h) {
+    handler: function (request, h) {
       return h.view("login", { title: "Login to hives" });
-    }
+    },
   },
   login: {
     auth: false,
@@ -91,12 +116,20 @@ const Accounts = {
     handler: async function (request, h) {
       const { email, password } = request.payload;
       try {
+        let user1 = await User.findByEmail(email).lean();
         let user = await User.findByEmail(email);
         if (!user) {
           const message = "Email address is not registered";
           throw Boom.unauthorized(message);
-        }
+        };
+        
+        //user1 = await User.findById(user._id).lean();
         user.comparePassword(password);
+        if (user1.status != "Active") {
+          const message= "Pending Account. Please Verify Your Email!";
+          throw Boom.unauthorized(message);
+        };
+        
         request.cookieAuth.set({ id: user.id });
         return h.redirect("/home");
       } catch (err) {
@@ -105,26 +138,32 @@ const Accounts = {
     },
   },
   logout: {
-    handler: function(request, h) {
+    handler: function (request, h) {
       request.cookieAuth.clear();
       return h.redirect("/");
-    }
+    },
   },
   showSettings: {
-    handler: async function(request, h) {
+    handler: async function (request, h) {
       try {
         const id = request.auth.credentials.id;
         const user = await User.findById(id).lean();
         const allUsers = await User.find({}).lean();
-        const report =  await Analytics.report();
-        if(!user.admin){
-          return h.view("settings", { title: "Account Settings", user: user });}
-        else {
-          return h.view("admin-settings", { title: "Account Admin Settings", user: user , allUsers: allUsers,report: report});}
+        const report = await Analytics.report();
+        if (!user.admin) {
+          return h.view("settings", { title: "Account Settings", user: user });
+        } else {
+          return h.view("admin-settings", {
+            title: "Account Admin Settings",
+            user: user,
+            allUsers: allUsers,
+            report: report,
+          });
+        }
       } catch (err) {
         return h.view("login", { errors: [{ message: err.message }] });
       }
-    }
+    },
   },
   updateSettings: {
     validate: {
@@ -155,9 +194,31 @@ const Accounts = {
         user.firstName = userEdit.firstName;
         user.lastName = userEdit.lastName;
         user.email = userEdit.email;
-        user.password = userEdit.password;
+        const hash = await bcrypt.hash(userEdit.password, saltRounds);
+        user.password = hash;
         await user.save();
         return h.redirect("/settings");
+      } catch (err) {
+        return h.view("main", { errors: [{ message: err.message }] });
+      }
+    },
+  },
+  updateStatus: {
+    handler: async function (request, h) {
+      try {
+        const str = request.path;
+        var result = "";
+        var count = 0;
+        for (var i = 0; i < str.length; i++) {
+          if (str.charAt(i) == "/") {
+            count = count + 1;
+          }
+          if (count >= 2 && str.charAt(i) != "/") {
+            result = result + str.charAt(i);
+          }
+        }
+        await User.findOneAndUpdate({ confirmationCode: result }, { status: "Active" , confirmationCode: "" });
+        return h.redirect("/login");
       } catch (err) {
         return h.view("main", { errors: [{ message: err.message }] });
       }
@@ -171,7 +232,6 @@ const Accounts = {
         const user = await User.findById(id);
         console.log("This Account will get deleted " + user.email);
         user.remove();
-        
 
         return h.view("main");
       } catch (err) {
@@ -189,10 +249,15 @@ const Accounts = {
         console.log("This Account will get deleted " + member.email);
         member.remove();
         const allUsers = await User.find({}).lean();
-        const report =  await Analytics.report();
-        return h.view("admin-settings", { title: "Account Admin Settings", user: user , allUsers: allUsers,report: report});
+        const report = await Analytics.report();
+        return h.view("admin-settings", {
+          title: "Account Admin Settings",
+          user: user,
+          allUsers: allUsers,
+          report: report,
+        });
       } catch (err) {
-        return h.view("main", { errors: [{ message: err.message }]});
+        return h.view("main", { errors: [{ message: err.message }] });
       }
     },
   },
@@ -203,25 +268,27 @@ const Accounts = {
         const adminId = request.auth.credentials.id;
         const user = await User.findById(adminId).lean();
         const member = await User.findById(_id).lean();
-        
-        if (member.admin){
+
+        if (member.admin) {
           member.admin = false;
-        }
-        else
-          member.admin = true;
-        const filter = {'_id':_id };
-        const update = {'admin': member.admin};
-        let adminRights = await User.findOneAndUpdate(filter,update,{new: true});
+        } else member.admin = true;
+        const filter = { _id: _id };
+        const update = { admin: member.admin };
+        let adminRights = await User.findOneAndUpdate(filter, update, { new: true });
         console.log("Member " + member.email + " Has admin rights updated");
         const allUsers = await User.find({}).lean();
-        const report =  await Analytics.report();
-        return h.view("admin-settings", { title: "Account Admin Settings", user: user , allUsers: allUsers, report: report});
+        const report = await Analytics.report();
+        return h.view("admin-settings", {
+          title: "Account Admin Settings",
+          user: user,
+          allUsers: allUsers,
+          report: report,
+        });
       } catch (err) {
-        return h.view("main", { errors: [{ message: err.message }]});
+        return h.view("main", { errors: [{ message: err.message }] });
       }
     },
   },
-
 };
 
 module.exports = Accounts;

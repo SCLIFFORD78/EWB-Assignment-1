@@ -1,3 +1,5 @@
+<script></script>
+
 <div class="uk-flex uk-flex-center uk-flex-middle uk-grid-small" uk-grid>
   {{> title-card title="Beaufort Beekeepers Hive Tracking" subTitle="Please sign up"}}
   {{> welcome-menu }}
@@ -39,7 +41,9 @@
           <div class="uk-margin">
             <button class="uk-button uk-button-primary uk-button-large uk-width-1-1">Sign up</button>
           </div>
+          <div class="g-signin2" data-onsuccess="onSignIn"></div>
         </form>
+        
         {{> error }}
       </div>
     </div>
