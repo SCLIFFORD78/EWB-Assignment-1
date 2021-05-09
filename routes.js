@@ -29,6 +29,7 @@ module.exports = [
   { method: "POST", path: "/updateLocation", config: Hives.updateLocation },
   { method: "GET", path: "/gallery/{id}", config: Hives.gallery },
   { method: "GET", path: "/deleteimage/{folder}/{id}", config: Hives.deleteImage },
+  
 
   {
     method: "GET",

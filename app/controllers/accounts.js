@@ -6,16 +6,14 @@ const Analytics = require("../utils/analytics");
 const { report } = require("../utils/analytics");
 const nodemailer = require("../utils/nodemailer.config");
 const auth = require("../utils/auth.config");
+const jwt = require("jsonwebtoken");
 
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 const characters = "3PDQU5T2elyDBwtYlbc7kiRx5o2sLQyw";
-var jwt = require("jsonwebtoken");
-let token = "";
-for (let i = 0; i < 2; i++) {
-  token += characters[Math.floor(Math.random() * characters.length)];
-}
+
+
 
 //
 const Accounts = {
@@ -35,10 +33,10 @@ const Accounts = {
     auth: false,
     validate: {
       payload: {
-        firstName: Joi.string().required(),
-        lastName: Joi.string().required(),
+        firstName: Joi.string().required().regex(/^[A-Z][a-z-a*]{2,}$/),
+        lastName: Joi.string().required().regex(/^[A-Z][A-Za-z\s\'\-]{2,}$/),
         email: Joi.string().email().required(),
-        password: Joi.string().required(),
+        password: Joi.string().required().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/),
       },
       options: {
         abortEarly: false,
@@ -60,10 +58,13 @@ const Accounts = {
         if (user) {
           const message = "Email address is already registered";
           throw Boom.badData(message);
-        }
-
+        };
+        let token = "";
+        for (let i = 0; i < characters.length; i++) {
+          token += characters[Math.floor(Math.random() * characters.length)];
+        };
         const hash = await bcrypt.hash(payload.password, saltRounds);
-        const token = jwt.sign({ email: payload.email }, auth.secret);
+        token = jwt.sign({ email: payload.email }, auth.secret);
         const newUser = new User({
           firstName: payload.firstName,
           lastName: payload.lastName,
@@ -98,7 +99,7 @@ const Accounts = {
     validate: {
       payload: {
         email: Joi.string().email().required(),
-        password: Joi.string().required(),
+        password: Joi.string().required().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/),
       },
       options: {
         abortEarly: false,
@@ -168,10 +169,10 @@ const Accounts = {
   updateSettings: {
     validate: {
       payload: {
-        firstName: Joi.string().required(),
-        lastName: Joi.string().required(),
+        firstName: Joi.string().required().regex(/^[A-Z][a-z-a*]{2,}$/),
+        lastName: Joi.string().required().regex(/^[A-Z][A-Za-z\s\'\-]{2,}$/),
         email: Joi.string().email().required(),
-        password: Joi.string().required(),
+        password: Joi.string().required().regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/),
       },
       options: {
         abortEarly: false,
