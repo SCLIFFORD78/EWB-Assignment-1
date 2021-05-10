@@ -16,18 +16,27 @@
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
   <script src="https://product-gallery.cloudinary.com/all.js" type="text/javascript"></script>
-  <script src="https://apis.google.com/js/platform.js" async defer></script>
-  <script>
-  function init() {
-    gapi.load('auth2', function() {
-    /* Ready. Make a call to gapi.auth2.init or some other API */
-  });
-}
-</script>
   <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
   <meta name="google-signin-client_id"
     content="59873892830-pp375a1p66dg615r6coomficqr0dkiti.apps.googleusercontent.com">
 
+  <script>
+    function init() {
+
+      gapi.load('auth2', function () {
+        /* Ready. Make a call to gapi.auth2.init or some other API */
+        var GG = gapi.auth2.init({
+          client_id: '59873892830-pp375a1p66dg615r6coomficqr0dkiti.apps.googleusercontent.com'
+        });
+
+
+      });
+
+    };
+
+    //GoogleAuth.signOut();
+
+  </script>
 
 </head>
 
@@ -36,11 +45,3 @@
 </body>
 
 </html>
-<script>
-  function signOut() {
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-      console.log('User signed out.');
-    });
-  }
-</script>

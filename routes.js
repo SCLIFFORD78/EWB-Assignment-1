@@ -10,12 +10,14 @@ module.exports = [
   { method: "GET", path: "/logout", config: Accounts.logout },
   { method: "POST", path: "/signup", config: Accounts.signup },
   { method: "POST", path: "/login", config: Accounts.login },
+  { method: "POST", path: "/googleLogin", config: Accounts.googleLogin },
   { method: "GET", path: "/settings", config: Accounts.showSettings },
   { method: "POST", path: "/settings", config: Accounts.updateSettings },
   { method: "POST", path: "/deleteAccount", config: Accounts.deleteAccount },
   { method: "POST", path: "/toggleAdmin", config: Accounts.toggleAdmin },
   { method: "POST", path: "/adminDeleteAccount/{id}", config: Accounts.adminDeleteAccount },
   { method: "GET", path: "/confirm/{status}", config: Accounts.updateStatus },
+
 
   { method: "GET", path: "/home", config: Hives.home },
   { method: "POST", path: "/addHive", config: Hives.addHive },

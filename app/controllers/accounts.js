@@ -16,6 +16,7 @@ const characters = "3PDQU5T2elyDBwtYlbc7kiRx5o2sLQyw";
 
 
 //
+var gtoggle = ""
 const Accounts = {
   index: {
     auth: false,
@@ -23,6 +24,7 @@ const Accounts = {
       return h.view("main", { title: "Welcome to hives" });
     },
   },
+  
   showSignup: {
     auth: false,
     handler: function (request, h) {
@@ -52,6 +54,7 @@ const Accounts = {
       },
     },
     handler: async function (request, h) {
+      
       try {
         const payload = request.payload;
         let user = await User.findByEmail(payload.email);
@@ -83,7 +86,7 @@ const Accounts = {
         };
         return h.redirect("/home");
       } catch (err) {
-        return h.view("login", { errors: [{ message: err.message }] });
+        return h.view("login", { errors: [{ message: err.message }], toggle: gtoggle });
       }
       
     },
@@ -91,7 +94,7 @@ const Accounts = {
   showLogin: {
     auth: false,
     handler: function (request, h) {
-      return h.view("login", { title: "Login to hives" });
+      return h.view("login", { title: "Login to hives", toggle: false });
     },
   },
   login: {
@@ -109,13 +112,14 @@ const Accounts = {
           .view("login", {
             title: "Sign in error",
             errors: error.details,
+            toggle: false
           })
           .takeover()
           .code(400);
       },
     },
     handler: async function (request, h) {
-      const { email, password } = request.payload;
+      const { email, password, google } = request.payload;
       try {
         let user1 = await User.findByEmail(email).lean();
         let user = await User.findByEmail(email);
@@ -134,7 +138,35 @@ const Accounts = {
         request.cookieAuth.set({ id: user.id });
         return h.redirect("/home");
       } catch (err) {
-        return h.view("login", { errors: [{ message: err.message }] });
+        return h.view("login", { errors: [{ message: err.message }] , toggle: false});
+      }
+    },
+  },
+  googleLogin: {
+    auth: false,
+    
+    handler: async function (request, h) {
+      const { googleemail, googlefirstName, googlelastName } = request.payload;
+      try {
+        let user1 = await User.findByEmail(googleemail).lean();
+        let user = await User.findByEmail(googleemail);
+        if (!user) {
+          const message = "Email address is not registered";
+          gtoggle = true;
+          throw Boom.unauthorized(message);
+        };
+        
+        //user1 = await User.findById(user._id).lean();
+        if (user1.status != "Active") {
+          await User.findOneAndUpdate({ email: googleemail }, { status: "Active" , confirmationCode: "" });
+        };
+        
+        
+        request.cookieAuth.set({ id: user.id });
+        gtoggle = true;
+        return h.redirect("/home");
+      } catch (err) {
+        return h.view("signup", { errors: [{ message: err.message }], email: googleemail, firstName: googlefirstName, lastName: googlelastName });
       }
     },
   },
@@ -162,7 +194,7 @@ const Accounts = {
           });
         }
       } catch (err) {
-        return h.view("login", { errors: [{ message: err.message }] });
+        return h.view("login", { errors: [{ message: err.message }] , toggle: false });
       }
     },
   },
