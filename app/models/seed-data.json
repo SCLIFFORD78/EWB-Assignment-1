@@ -5,32 +5,36 @@
             "firstName": "john",
             "lastName": "clifford",
             "email": "jclifford@gmail.com",
-            "password": "1234",
-            "memberNumber": 0
+            "password": "$2a$10$eVyc9pbqtQpozL4N45BqiuzE7RjJUDiWnqMIITzb3U8eBbR2VoEoa",
+            "memberNumber": 0,
+            "status": "Active"
         },
         "admin": {
             "admin": true,
             "firstName": "admin",
             "lastName": "admin",
             "email": "admin@admin.com",
-            "password": "1234",
-            "memberNumber": 1
+            "password": "$2a$10$eVyc9pbqtQpozL4N45BqiuzE7RjJUDiWnqMIITzb3U8eBbR2VoEoa",
+            "memberNumber": 1,
+            "status": "Active"
         },
         "homer": {
             "admin": false,
             "firstName": "homer",
             "lastName": "Simpson",
             "email": "homer@simpson.com",
-            "password": "1234",
-            "memberNumber": 2
+            "password": "$2a$10$eVyc9pbqtQpozL4N45BqiuzE7RjJUDiWnqMIITzb3U8eBbR2VoEoa",
+            "memberNumber": 2,
+            "status": "Active"
         },
         "marge": {
             "admin": false,
             "firstName": "Marge",
             "lastName": "Simpson",
             "email": "marge@simpson.com",
-            "password": "1234",
-            "memberNumber": 3
+            "password": "$2a$10$eVyc9pbqtQpozL4N45BqiuzE7RjJUDiWnqMIITzb3U8eBbR2VoEoa",
+            "memberNumber": 3,
+            "status": "Active"
         }
     },
     "hives": {
