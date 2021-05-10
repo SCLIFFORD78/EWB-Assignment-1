@@ -1,13 +1,30 @@
 <script>
-    if (window.location.protocol == "http:") {
-      console.log("You are not connected with a secure connection.")
-      console.log("Reloading the page to a Secure Connection...")
-      window.location = document.URL.replace("http://localhost:3000/login", "https://localhost/login");
-    }
+  if (window.location.protocol == "http:") {
+    console.log("You are not connected with a secure connection.")
+    console.log("Reloading the page to a Secure Connection...")
+    window.location = document.URL.replace("http://localhost:3000/login", "https://localhost/login");
+  }
 
-    if (window.location.protocol == "https:") {
-      console.log("You are connected with a secure connection.")
-    }
+  if (window.location.protocol == "https:") {
+    console.log("You are connected with a secure connection.")
+  }
+</script>
+<script>
+
+  function onSignIn(googleUser) {
+    googleUser1 = googleUser;
+    var profile = googleUser.getBasicProfile();
+    const firstName = profile.getGivenName();
+    const lastName = profile.getFamilyName();
+    const email = profile.getEmail();
+    document.getElementById('googleemail').value = email;
+    document.getElementById('googlefirstName').value = firstName;
+    document.getElementById('googlelastName').value = lastName;
+    if ({{ toggle }}) {
+    document.getElementById("googleButton").click();
+  };
+
+
 </script>
 
 <div class="uk-flex uk-flex-center uk-flex-middle uk-grid-small" uk-grid>
@@ -38,7 +55,21 @@
             <button class="uk-button uk-button-primary uk-button-large uk-width-1-1">Login</button>
           </div>
           <div class="uk-text-left uk-text-small"></div>
+
         </form>
+        <form action="/googleLogin" method="POST">
+          <div class="uk-margin">
+            <input name='googleemail' type="hidden" value="" id="googleemail">
+            <input name='googlefirstName' type="hidden" value="" id="googlefirstName">
+            <input name='googlelastName' type="hidden" value="" id="googlelastName">
+            <button class="uk-button uk-button-primary uk-button-medium uk-width-1-1" id="googleButton">Login in with
+              google
+            </button>
+          </div>
+          <div class="g-signin2" data-onsuccess="onSignIn" name="google"></div>
+        </form>
+        <button class="uk-button uk-button-primary uk-button-medium uk-width-1-1" id="googleoutButton" onclick="signOut();">Login in with google
+        </button>
         {{> error }}
       </div>
     </div>

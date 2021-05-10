@@ -7,8 +7,8 @@ const Handlebars = require("handlebars");
 const Cookie = require("@hapi/cookie");
 require("./app/models/db");
 const env = require("dotenv");
-const Joi = require("@hapi/joi");
-const fs = require('fs');
+const Bell = require("@hapi/bell");
+const fs = require("fs");
 const https = require("https");
 
 env.config();
@@ -22,15 +22,14 @@ const server = Hapi.server({
 });
 
 const server2 = Hapi.server({
-  port: 3000,
-  host: 'localhost'
+  port: 3002,
+  host: "localhost",
 });
-
 
 async function init() {
   await server.register(Inert);
   await server.register(Vision);
-  await server.register(Cookie);
+  await server.register([Bell, Cookie]);
   await server2.register(Inert);
   await server2.register(Vision);
   await server2.register(Cookie);
@@ -56,16 +55,26 @@ async function init() {
     layout: true,
     isCached: false,
   });
-  server.auth.strategy("session", "cookie", {
+  server.auth.strategy("cookie-auth", "cookie", {
     cookie: {
-      name: process.env.cookie_name,
-      password: process.env.cookie_password,
-      isSecure: false,
+      name: "hive_tracker", // Name of auth cookie to be set
+      password: "password-should-be-32-characters", // String used to encrypt cookie
+      isSecure: true, // Should be 'true' in production software (requires HTTPS)
     },
     redirectTo: "/",
   });
-  
-  server.auth.default("session");
+  var bellAuthOptions = {
+    provider: "github",
+    password: "github-encryption-password-secure", // String used to encrypt cookie
+    // used during authorisation steps only
+    clientId: "5b5eadd90a0283143c0c", // *** Replace with your app Client Id ****
+    clientSecret: "3ca60959c49de91844a190f3e22fd5a7e58e325e", // *** Replace with your app Client Secret ***
+    isSecure: true, // Should be 'true' in production software (requires HTTPS)
+  };
+
+  server.auth.strategy("github-oauth", "bell", bellAuthOptions);
+
+  server.auth.default("cookie-auth");
 
   server.route(require("./routes"));
   server2.route(require("./routes2"));
