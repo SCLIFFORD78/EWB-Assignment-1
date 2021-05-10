@@ -12,7 +12,7 @@
 <script>
 
   function onSignIn(googleUser) {
-    googleUser1 = googleUser;
+
     var profile = googleUser.getBasicProfile();
     const firstName = profile.getGivenName();
     const lastName = profile.getFamilyName();
@@ -21,10 +21,10 @@
     document.getElementById('googlefirstName').value = firstName;
     document.getElementById('googlelastName').value = lastName;
     if ({{ toggle }}) {
-    document.getElementById("googleButton").click();
-  };
+      document.getElementById("googleButton").click();
+    };
 
-
+  }
 </script>
 
 <div class="uk-flex uk-flex-center uk-flex-middle uk-grid-small" uk-grid>
