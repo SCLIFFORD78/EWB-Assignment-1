@@ -10,6 +10,7 @@ const env = require("dotenv");
 const Bell = require("@hapi/bell");
 const fs = require("fs");
 const https = require("https");
+const utils = require("./app/api/utils.js");
 
 env.config();
 
@@ -22,8 +23,8 @@ const server = Hapi.server({
 });
 
 const server2 = Hapi.server({
-  port: 3002,
-  host: "localhost",
+  port: 4000,
+  routes: { cors: true },
 });
 
 async function init() {
@@ -33,6 +34,8 @@ async function init() {
   await server2.register(Inert);
   await server2.register(Vision);
   await server2.register(Cookie);
+  await server2.register(require("hapi-auth-jwt2"));
+  server2.validator(require("@hapi/joi"));
   server.views({
     engines: {
       hbs: require("handlebars"),
@@ -76,8 +79,26 @@ async function init() {
 
   server.auth.default("cookie-auth");
 
+  server2.auth.strategy("session", "cookie", {
+    cookie: {
+      name: process.env.cookie_name,
+      password: process.env.cookie_password,
+      isSecure: false,
+    },
+    redirectTo: "/",
+  });
+  server2.auth.strategy("jwt", "jwt", {
+    key: "secretpasswordnotrevealedtoanyone",
+    validate: utils.validate,
+    verifyOptions: { algorithms: ["HS256"] },
+  });
+
+  server2.auth.default("session");
+
+
   server.route(require("./routes"));
   server2.route(require("./routes2"));
+  server2.route(require("./routes-api"));
   await server.start();
   await server2.start();
   console.log(`Server running at: ${server.info.uri}`);
@@ -90,6 +111,5 @@ process.on("unhandledRejection", (err) => {
 });
 
 server.validator(require("@hapi/joi"));
-server2.validator(require("@hapi/joi"));
 
 init();

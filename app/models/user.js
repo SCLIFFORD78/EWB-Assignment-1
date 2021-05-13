@@ -34,6 +34,6 @@ userSchema.methods.comparePassword = async function(candidatePassword) {
   }
   return this;
 };
-userSchema.plugin(autoIncrement.plugin, { model: "User", field: "memberNumber" });
+//userSchema.plugin(autoIncrement.plugin, { model: "User", field: "memberNumber" });
 
 module.exports = Mongoose.model("User", userSchema);

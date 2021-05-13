@@ -14,7 +14,11 @@ Mongoose.set("useCreateIndex", true);
 Mongoose.connect(process.env.db);
 const db = Mongoose.connection;
 
-autoIncrement.initialize(db);
+function initDB(){
+  autoIncrement.initialize(db);
+;}
+
+//initDB();
 
 db.on("error", function (err) {
   console.log(`database connection error: ${err}`);
@@ -37,7 +41,7 @@ async function seed() {
   console.log(dbData);
 }
 
-db.once("open", function () {
+/* db.once("open", function () {
   console.log(`database connected to ${this.name} on ${this.host}`);
   seed();
-});
+}); */
