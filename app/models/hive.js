@@ -17,7 +17,7 @@ const hiveSchema = new Schema({
     ref: "User",
   }
 });
-//hiveSchema.plugin(autoIncrement.plugin, {model: 'Hive', field:'hiveNumber'});
+hiveSchema.plugin(autoIncrement.plugin, {model: 'Hive', field:'hiveNumber'});
 
 
 module.exports = Mongoose.model("Hive", hiveSchema);
