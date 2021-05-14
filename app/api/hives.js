@@ -67,25 +67,37 @@ const Hives = {
       return Boom.notFound("id not found");
     },
   },
-/* 
-  update: {
+ 
+  addComment: {
     auth: {
       strategy: "jwt",
     },
     handler: async function (request, h) {
-      const hiveEdit = request.payload;
-      const hive = await Hive.findById(hiveEdit._id);
-      hive.firstName = hiveEdit.firstName;
-      hive.lastName = hiveEdit.lastName;
-      hive.email = hiveEdit.email;
-      hive.password = hiveEdit.password;
+      const hive = await Hive.findById(request.params.id);
+      const test =hive.details[0].comments ;
+      await hive.details.push({ comments: hive.details[0].comments });
       await hive.save();
       if (hive) {
         return { success: true };
       }
       return Boom.notFound("id not found");
     },
-  }, */
+  }, 
+
+  deleteComment: {
+    auth: {
+      strategy: "jwt",
+    },
+    handler: async function (request, h) {
+      const hive = await Hive.findById( request.params.id );
+      hive.details.pull({"_id": request.params.comment_id })
+      await hive.save();
+      if (hive) {
+        return { success: true };
+      }
+      return Boom.notFound("id not found");
+    },
+  },
 
 };
 

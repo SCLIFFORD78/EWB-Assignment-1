@@ -39,7 +39,7 @@ class HiveTracker {
       const response = await axios.delete(this.baseUrl + "/api/users");
       return response.data;
     } catch (e) {
-      return null;
+      return e;
     }
   }
 
@@ -97,32 +97,24 @@ class HiveTracker {
     }
   }
 
-/*   async makeDonation(id, donation) {
+  async addHiveComment(id) {
     try {
-      const response = await axios.post(this.baseUrl + "/api/hives/" + id + "/donations", donation);
+      const response = await axios.post(this.baseUrl + "/api/hives/addComment/" + id);
       return response.data;
     } catch (e) {
       return null;
     }
   }
 
-  async getDonations(id) {
+  async deleteHiveComment(hive_id, comment_id) {
     try {
-      const response = await axios.get(this.baseUrl + "/api/hives/" + id + "/donations");
+      const response = await axios.delete(this.baseUrl + "/api/hives/deleteComment/" + hive_id + "/" + comment_id);
       return response.data;
     } catch (e) {
       return null;
     }
   }
 
-  async deleteAllDonations() {
-    try {
-      const response = await axios.delete(this.baseUrl + "/api/donations");
-      return response.data;
-    } catch (e) {
-      return null;
-    }
-  } */
 
   async authenticate(user) {
     try {

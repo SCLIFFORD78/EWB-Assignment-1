@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
-const db = require("../models/db");
 
 exports.createToken = function (user) {
   return jwt.sign({ id: user._id, email: user.email }, "secretpasswordnotrevealedtoanyone", {

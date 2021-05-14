@@ -32,7 +32,6 @@
       "longtitude": -9.55344039202828,
       "hiveType": "Super",
       "description": "Behind Back wall of main building",
-      "owner": "->users.john",
       "details": [
           {
               "comments": "Could be very exposed in winter",
@@ -47,7 +46,6 @@
       "longtitude": -9.54854321484163,
       "hiveType": "National",
       "description": "Between two large rocks at top of island",
-      "owner": "->users.homer",
       "details": [
           {
               "comments": "Room for at least 3 more hives",
@@ -62,7 +60,6 @@
       "longtitude": -9.55908912421364,
       "hiveType": "Super",
       "description": "Behind back wall next to fenced gate",
-      "owner": "->users.john",
       "details": [
           {
               "comments": "A lot of kids in the area, might consider moving",
@@ -77,7 +74,6 @@
       "longtitude": -9.633895933639,
       "hiveType": "National",
       "description": "Under the small bridge on North side ",
-      "owner": "->users.homer",
       "details": [
           {
               "comments": "On a piece of high ground so should be safe from flooding",
@@ -93,15 +89,13 @@
     "longtitude": -9.633895934329,
     "hiveType": "National",
     "description": "Under the small bridge on North side ",
-    "owner": "->users.homer",
     "details": [
         {
             "comments": "On a piece of high ground so should be safe from flooding",
             "dateLogged": "2021-03-19T20:38:38.652Z"
         }
     ],
-    "added": "2021-03-19T20:38:38.652Z",
-    "hiveNumber": 4
+    "added": "2021-03-19T20:38:38.652Z"
   },
   "newUser": {
     "firstName": "Homey",

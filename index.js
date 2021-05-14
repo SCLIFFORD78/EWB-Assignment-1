@@ -23,7 +23,7 @@ const server = Hapi.server({
 });
 
 const server2 = Hapi.server({
-  port: 4000,
+  port: process.env.PORT || 4000,
   routes: { cors: true },
 });
 
@@ -95,9 +95,9 @@ async function init() {
 
   server2.auth.default("session");
 
-
   server.route(require("./routes"));
-  server2.route(require("./routes2"));
+  server2.route(require("./routes"));
+  //server2.route(require("./routes2"));
   server2.route(require("./routes-api"));
   await server.start();
   await server2.start();

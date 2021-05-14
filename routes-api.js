@@ -8,6 +8,8 @@ module.exports = [
   { method: "POST", path: "/api/hives", config: Hives.create },
   { method: "DELETE", path: "/api/hives/{id}", config: Hives.deleteOne },
   { method: "DELETE", path: "/api/hives", config: Hives.deleteAll },
+  { method: "POST", path: "/api/hives/addComment/{id}", config: Hives.addComment },
+  { method: "DELETE", path: "/api/hives/deleteComment/{id}/{comment_id}", config: Hives.deleteComment },
 
   { method: "GET", path: "/api/users", config: Users.find },
   { method: "GET", path: "/api/users/{id}", config: Users.findOne },

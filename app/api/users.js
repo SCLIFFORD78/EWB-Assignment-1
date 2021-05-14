@@ -4,7 +4,6 @@ const User = require("../models/user");
 const Boom = require("@hapi/boom");
 const utils = require("./utils.js");
 
-
 const Users = {
   find: {
     auth: {
@@ -39,8 +38,9 @@ const Users = {
       const test = request.payload;
       const newUser = new User(request.payload);
       const user = await newUser.save();
-      if (user) {
-        return h.response(user).code(201);
+      const test1 = await User.findByEmail(newUser.email).lean();
+      if (test1) {
+        return h.response(test1).code(201);
       }
       return Boom.badImplementation("error creating user");
     },
@@ -51,7 +51,7 @@ const Users = {
       strategy: "jwt",
     },
     handler: async function (request, h) {
-      await User.deleteMany({});
+      const test = await User.deleteMany({}, (err) => console.log(err));
       return { success: true };
     },
   },

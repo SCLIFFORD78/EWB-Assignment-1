@@ -17,9 +17,22 @@ suite("User API tests", function () {
     const response = await hiveTracker.authenticate(newUser);
   });
 
+
   suiteTeardown(async function () {
     await hiveTracker.deleteAllUsers();
     hiveTracker.clearAuth();
+  });
+
+  test("get all users", async function () {
+    await hiveTracker.deleteAllUsers();
+    await hiveTracker.createUser(newUser);
+    await hiveTracker.authenticate(newUser);
+    for (let u of users) {
+      await hiveTracker.createUser(u);
+    };
+
+    const allUsers = await hiveTracker.getUsers();
+    assert.equal(allUsers.length, users.length + 1);
   });
 
   test("create a user", async function () {
@@ -46,20 +59,11 @@ suite("User API tests", function () {
     assert(u._id != null);
     await hiveTracker.deleteOneUser(u._id);
     u = await hiveTracker.getUser(u._id);
+    await hiveTracker.deleteAllUsers();
     assert(u == null);
   });
 
-  test("get all users", async function () {
-    await hiveTracker.deleteAllUsers();
-    await hiveTracker.createUser(newUser);
-    await hiveTracker.authenticate(newUser);
-    for (let u of users) {
-      await hiveTracker.createUser(u);
-    }
 
-    const allUsers = await hiveTracker.getUsers();
-    assert.equal(allUsers.length, users.length + 1);
-  });
 
   test("get users detail", async function () {
     await hiveTracker.deleteAllUsers();
