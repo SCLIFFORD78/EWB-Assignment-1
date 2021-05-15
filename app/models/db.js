@@ -18,7 +18,7 @@ function initDB(){
   autoIncrement.initialize(db);
 ;}
 
-//initDB();
+initDB();
 
 db.on("error", function (err) {
   console.log(`database connection error: ${err}`);
