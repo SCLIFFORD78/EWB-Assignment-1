@@ -65,6 +65,20 @@ suite("User API tests", function () {
     assert.isNull(u2);
   });
 
+  test("Register with existing email", async function () {
+    const u1 = await hiveTracker.createUser(newUser);
+    await hiveTracker.authenticate({email: newUser.email, password:newUser.password});
+    const testUser = {
+      firstName: "John",
+      lastName: "Patrick",
+      email: newUser.email,
+      password: newUser.password
+    };
+    const u2 = await hiveTracker.createUser(testUser);
+    const totalUsers = await hiveTracker.getUsers();
+    assert.equal(totalUsers.length, 1);
+  });
+
   test("Change user Admin", async function () {
     const u1 = await hiveTracker.createUser(newUser);
     await hiveTracker.authenticate({email: newUser.email, password:newUser.password});

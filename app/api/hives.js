@@ -6,6 +6,7 @@ const utils = require("./utils.js");
 const Weather = require("../utils/weather")
 const Cloudinary = require("../utils/cloudinary");
 const User = require("../models/user")
+const Joi = require('@hapi/joi');
 
 
 const Hives = {
@@ -55,7 +56,31 @@ const Hives = {
   },
 
   create: {
-    auth: false,
+    auth: {
+      strategy: "jwt",
+    },
+    validate: {
+      payload: {
+        details: Joi.object(),
+        description: Joi.string().required(),
+        latitude: Joi.number().required(),
+        longtitude: Joi.number().required().negative(),
+        hiveType: Joi.any(),
+        owner: Joi.any()
+      },
+      options: {
+        abortEarly: false,
+      },
+      failAction: function (request, h, error) {
+        return h
+          .view("home", {
+            title: "Sign in error",
+            errors: error.details,
+          })
+          .takeover()
+          .code(400);
+      },
+    },
     handler: async function (request, h) {
       const hive = await Hive.create(request.payload);
       try {
