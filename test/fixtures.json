@@ -2,28 +2,27 @@
   "hiveTracker": "http://localhost:4000",
   "users": [
     {
-      "admin": false,
-      "firstName": "john",
-      "lastName": "clifford",
+      "firstName": "John",
+      "lastName": "Clifford",
       "email": "jclifford@gmail.com",
-      "password": "$2a$10$eVyc9pbqtQpozL4N45BqiuzE7RjJUDiWnqMIITzb3U8eBbR2VoEoa",
-      "status": "Active"
+      "password": "Secret01?"
+
     },
     {
-      "admin": true,
-      "firstName": "admin",
-      "lastName": "admin",
+
+      "firstName": "Admin",
+      "lastName": "Admin",
       "email": "admin@admin.com",
-      "password": "$2a$10$eVyc9pbqtQpozL4N45BqiuzE7RjJUDiWnqMIITzb3U8eBbR2VoEoa",
-      "status": "Active"
+      "password": "Secret01?"
+
     },
     {
-      "admin": false,
-      "firstName": "homer",
+
+      "firstName": "Homer",
       "lastName": "Simpson",
       "email": "homer@simpson.com",
-      "password": "$2a$10$eVyc9pbqtQpozL4N45BqiuzE7RjJUDiWnqMIITzb3U8eBbR2VoEoa",
-      "status": "Active"
+      "password": "Secret01?"
+
     }
   ],
   "hives": [
@@ -34,11 +33,11 @@
       "description": "Behind Back wall of main building",
       "details": [
           {
-              "comments": "Could be very exposed in winter",
-              "dateLogged": "2021-03-19T20:32:49.074Z"
+              "comments": "Could be very exposed in winter"
+
           }
       ],
-      "added": "2021-03-19T20:32:49.075Z",
+
       "hiveNumber": 0
     },
     {
@@ -48,11 +47,11 @@
       "description": "Between two large rocks at top of island",
       "details": [
           {
-              "comments": "Room for at least 3 more hives",
-              "dateLogged": "2021-03-19T20:34:13.253Z"
+              "comments": "Room for at least 3 more hives"
+
           }
       ],
-      "added": "2021-03-19T20:34:13.253Z",
+
       "hiveNumber": 1
     },
     {
@@ -62,11 +61,11 @@
       "description": "Behind back wall next to fenced gate",
       "details": [
           {
-              "comments": "A lot of kids in the area, might consider moving",
-              "dateLogged": "2021-03-19T20:36:35.784Z"
+              "comments": "A lot of kids in the area, might consider moving"
+
           }
       ],
-      "added": "2021-03-19T20:36:35.784Z",
+
       "hiveNumber": 2
     },
     {
@@ -76,11 +75,11 @@
       "description": "Under the small bridge on North side ",
       "details": [
           {
-              "comments": "On a piece of high ground so should be safe from flooding",
-              "dateLogged": "2021-03-19T20:38:38.652Z"
+              "comments": "On a piece of high ground so should be safe from flooding"
+
           }
       ],
-      "added": "2021-03-19T20:38:38.652Z",
+
       "hiveNumber": 3
     }
   ],
@@ -91,20 +90,20 @@
     "description": "Under the small bridge on North side ",
     "details": [
         {
-            "comments": "On a piece of high ground so should be safe from flooding",
-            "dateLogged": "2021-03-19T20:38:38.652Z"
+            "comments": "On a piece of high ground so should be safe from flooding"
+
         }
-    ],
-    "added": "2021-03-19T20:38:38.652Z"
+    ]
+
   },
   "newUser": {
     "firstName": "Homey",
     "lastName": "Simpson",
     "email": "homey@simpson.com",
-    "password": "$2a$10$eVyc9pbqtQpozL4N45BqiuzE7RjJUDiWnqMIITzb3U8eBbR2VoEoa",
-    "admin": false,
-    "status": "Active",
-    "confirmationCode": "123456789"
+    "password": "Secret01?"
+
   }
+
+  
 
 }

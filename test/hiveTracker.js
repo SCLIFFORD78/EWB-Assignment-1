@@ -25,9 +25,33 @@ class HiveTracker {
     }
   }
 
+  async getUserByEmail(email) {
+    try {
+      const response = await axios.get(this.baseUrl + "/api/users/findByEmail/" + email);
+      return response.data;
+    } catch (e) {
+      return null;
+    }
+  }
+
   async createUser(newUser) {
     try {
       const response = await axios.post(this.baseUrl + "/api/users", newUser);
+      return response.data;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async update(firstName, lastName, email, password, id) {
+    const details = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password
+    }
+    try {
+      const response = await axios.put(this.baseUrl + "/api/users/" + id, details);
       return response.data;
     } catch (e) {
       return null;
@@ -52,6 +76,15 @@ class HiveTracker {
     }
   }
 
+  async toggleAdmin(id){
+    try {
+      const response = await axios.put(this.baseUrl + "/api/users/toggleAdmin/" + id)
+      return response.statusText;
+    } catch (error) {
+      return error
+    }
+  }
+
   async getHives() {
     try {
       const response = await axios.get(this.baseUrl + "/api/hives");
@@ -70,6 +103,15 @@ class HiveTracker {
     }
   }
 
+  async getHiveByOwner(id) {
+    try {
+      const response = await axios.get(this.baseUrl + "/api/hives/getHiveByOwner/" + id);
+      return response.data;
+    } catch (e) {
+      return null;
+    }
+  }
+
   async createHive(newHive) {
     try {
       const response = await axios.post(this.baseUrl + "/api/hives", newHive);
@@ -81,8 +123,14 @@ class HiveTracker {
 
   async deleteAllHives() {
     try {
-      const response = await axios.delete(this.baseUrl + "/api/hives");
-      return response.data;
+      const allHives = await axios.get(this.baseUrl + "/api/hives");
+      const hives = allHives.data;
+      var resp = [];
+      for (var i = 0; i< hives.length; i++){
+        const response = await axios.delete(this.baseUrl + "/api/hives/" + hives[i]._id.toString());
+        resp.push(response.data)
+      }
+      return resp;
     } catch (e) {
       return null;
     }
@@ -97,9 +145,14 @@ class HiveTracker {
     }
   }
 
-  async addHiveComment(id) {
+  async addHiveComment(id, comment) {
+
+    const details = {
+      _id: id,
+      comment: comment
+    }
     try {
-      const response = await axios.post(this.baseUrl + "/api/hives/addComment/" + id);
+      const response = await axios.post(this.baseUrl + "/api/hives/addComment", details);
       return response.data;
     } catch (e) {
       return null;

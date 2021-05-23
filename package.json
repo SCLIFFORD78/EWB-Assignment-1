@@ -21,6 +21,7 @@
     "bcrypt": "^5.0.1",
     "bell": "^10.0.0",
     "cloudinary": "^1.25.1",
+    "cors-anywhere": "^0.4.4",
     "dotenv": "^8.6.0",
     "express": "^4.17.1",
     "express-openid-connect": "^2.3.1",

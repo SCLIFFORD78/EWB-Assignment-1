@@ -57,6 +57,7 @@ const Accounts = {
       
       try {
         const payload = request.payload;
+        const test = payload.email;
         let user = await User.findByEmail(payload.email);
         if (user) {
           const message = "Email address is already registered";
@@ -84,9 +85,11 @@ const Accounts = {
           const message= "Pending Account. Please Verify Your Email!";
           throw Boom.unauthorized(message);
         };
-        return h.redirect("/home");
+        //return h.redirect("/home");
+        return user;
       } catch (err) {
-        return h.view("login", { errors: [{ message: err.message }], toggle: gtoggle });
+        //return h.view("login", { errors: [{ message: err.message }], toggle: gtoggle });
+        return err;
       }
       
     },

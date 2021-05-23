@@ -5,6 +5,8 @@ var autoIncrement = require("mongoose-auto-increment");
 const Boom = require("@hapi/boom");
 const bcrypt = require("bcrypt");
 const Schema = Mongoose.Schema;
+const DB = require("./db");
+
 
 const userSchema = new Schema({
   firstName: String,

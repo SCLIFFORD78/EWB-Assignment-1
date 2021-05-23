@@ -50,7 +50,7 @@ const Hives = {
         description: Joi.string().required(),
         latitude: Joi.number().required(),
         longtitude: Joi.number().required().negative(),
-        radio2: Joi.any()
+        type: Joi.any()
       },
       options: {
         abortEarly: false,

@@ -16,15 +16,16 @@ suite("Authentication API tests", function () {
   });
 
   test("authenticate", async function () {
-    const returnedUser = await hiveTracker.createUser(newUser);
-    const response = await hiveTracker.authenticate(newUser);
+    const test = await hiveTracker.createUser(newUser);
+    const response = await hiveTracker.authenticate({email: newUser.email, password:newUser.password});
+    const returnedUser = await hiveTracker.getUserByEmail(newUser.email);
     assert(response.success);
     assert.isDefined(response.token);
   });
 
   test("verify Token", async function () {
     const returnedUser = await hiveTracker.createUser(newUser);
-    const response = await hiveTracker.authenticate(newUser);
+    const response = await hiveTracker.authenticate({email: newUser.email, password:newUser.password});
 
     const userInfo = utils.decodeToken(response.token);
     assert.equal(userInfo.email, returnedUser.email);

@@ -3,6 +3,8 @@
 const Mongoose = require("mongoose");
 var autoIncrement = require('mongoose-auto-increment');
 const Schema = Mongoose.Schema;
+const DB = require('./db');
+
 
 
 const hiveSchema = new Schema({
