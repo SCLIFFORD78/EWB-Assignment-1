@@ -99,7 +99,7 @@ async function init() {
   server2.route(require("./routes"));
   //server2.route(require("./routes2"));
   server2.route(require("./routes-api"));
-  await server.start();
+  //await server.start();
   await server2.start();
   console.log(`Server running at: ${server.info.uri}`);
   console.log(`Server running at: ${server2.info.uri}`);
