@@ -112,7 +112,17 @@ class HiveTracker {
     }
   }
 
-  async createHive(newHive) {
+  async createHive(latitude, longtitude, hiveType, description, comments , owner ) {
+
+    const newHive = {
+      latitude: latitude,
+      longtitude: longtitude,
+      hiveType: hiveType,
+      description: description,
+      details: {comments: comments},
+      owner: owner
+
+    }
     try {
       const response = await axios.post(this.baseUrl + "/api/hives", newHive);
       return response.data;

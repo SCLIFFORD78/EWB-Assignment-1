@@ -18,7 +18,7 @@ suite("User API tests", function () {
   });
 
   setup(async function () {
-    await hiveTracker.deleteAllUsers();
+   await hiveTracker.deleteAllUsers();
   });
 
 

@@ -6,23 +6,18 @@
       "lastName": "Clifford",
       "email": "jclifford@gmail.com",
       "password": "Secret01?"
-
     },
     {
-
       "firstName": "Admin",
       "lastName": "Admin",
       "email": "admin@admin.com",
       "password": "Secret01?"
-
     },
     {
-
       "firstName": "Homer",
       "lastName": "Simpson",
       "email": "homer@simpson.com",
       "password": "Secret01?"
-
     }
   ],
   "hives": [
@@ -32,12 +27,10 @@
       "hiveType": "Super",
       "description": "Behind Back wall of main building",
       "details": [
-          {
-              "comments": "Could be very exposed in winter"
-
-          }
+        {
+          "comments": "Could be very exposed in winter"
+        }
       ]
-
     },
     {
       "latitude": 52.0536773653575,
@@ -45,13 +38,10 @@
       "hiveType": "National",
       "description": "Between two large rocks at top of island",
       "details": [
-          {
-              "comments": "Room for at least 3 more hives"
-
-          }
+        {
+          "comments": "Room for at least 3 more hives"
+        }
       ]
-
-
     },
     {
       "latitude": 52.0795091357435,
@@ -59,13 +49,10 @@
       "hiveType": "Super",
       "description": "Behind back wall next to fenced gate",
       "details": [
-          {
-              "comments": "A lot of kids in the area, might consider moving"
-
-          }
+        {
+          "comments": "A lot of kids in the area, might consider moving"
+        }
       ]
-
-
     },
     {
       "latitude": 52.0584178460594,
@@ -73,13 +60,10 @@
       "hiveType": "National",
       "description": "Under the small bridge on North side ",
       "details": [
-          {
-              "comments": "On a piece of high ground so should be safe from flooding"
-
-          }
+        {
+          "comments": "On a piece of high ground so should be safe from flooding"
+        }
       ]
-
-
     }
   ],
   "newHive": {
@@ -87,12 +71,7 @@
     "longtitude": -9.633895934329,
     "hiveType": "National",
     "description": "Under the small bridge on North side ",
-    "details": [
-        {
-            "comments": "On a piece of high ground so should be safe from flooding"
-
-        }
-    ]
+    "comments": "On a piece of high ground so should be safe from flooding"
 
   },
   "newUser": {
@@ -100,9 +79,6 @@
     "lastName": "Simpson",
     "email": "homey@simpson.com",
     "password": "Secret01?"
-
   }
-
-  
-
 }
+

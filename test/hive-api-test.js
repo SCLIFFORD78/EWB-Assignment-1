@@ -7,17 +7,25 @@ const _ = require("lodash");
 
 suite("Hive API tests", function () {
   let hives = fixtures.hives;
-  let newHive = fixtures.newHive;
+  let newHive = {
+    latitude: fixtures.newHive.latitude,
+    longtitude: fixtures.newHive.longtitude,
+    hiveType: fixtures.newHive.hiveType,
+    description: fixtures.newHive.description,
+    comments: fixtures.newHive.comments,
+    owner: 1
+  }
   let newUser = fixtures.newUser;
   let returnedUser;
+  let users = fixtures.users;
 
   const hiveTracker = new HiveTracker(fixtures.hiveTracker);
 
   suiteSetup(async function () {
     await hiveTracker.deleteAllHives();
-    const returnedHive = await hiveTracker.createHive(newHive);
     returnedUser = await hiveTracker.createUser(newUser);
-    const response = await hiveTracker.authenticate(newUser);
+    const response = await hiveTracker.authenticate({email: newUser.email, password:newUser.password});
+    const returnedHive = await hiveTracker.createHive(newHive.latitude,newHive.longtitude,newHive.hiveType,newHive.description,newHive.comments,returnedUser._id);
   });
 
 
@@ -31,9 +39,9 @@ suite("Hive API tests", function () {
   });
 
   test("get all hives", async function () {
-    await hiveTracker.createHive(newHive);
+    await hiveTracker.createHive(newHive.latitude,newHive.longtitude,newHive.hiveType,newHive.description,newHive.comments,returnedUser._id);
     for (let u of hives) {
-      await hiveTracker.createHive(u);
+      await hiveTracker.createHive(u.latitude,u.longtitude,u.hiveType,u.description,u.comments,returnedUser._id);
     };
 
     const allHives = await hiveTracker.getHives();
@@ -42,21 +50,14 @@ suite("Hive API tests", function () {
 
   test("get all hives by user", async function () {
     //await hiveTracker.deleteAllUsers();
-    for (let u of hives) {
-      await hiveTracker.createHive(u);
+    for (let u of users) {
+      await hiveTracker.createUser(u);
+      await hiveTracker.authenticate({email: u.email, password:u.password});
+      await hiveTracker.createHive(newHive.latitude,newHive.longtitude,newHive.hiveType,newHive.description,newHive.comments,u._id);
     };
 
-    const testHive = {
-      latitude: newHive.latitude,
-      longtitude: newHive.longtitude,
-      hiveType: newHive.hiveType,
-      description: newHive.description,
-      owner: returnedUser._id,
-      details: newHive.details,
-    };
-
-    const u1 = await hiveTracker.createHive(testHive);
-    const u2 = await hiveTracker.createHive(testHive);
+    const u1 = await hiveTracker.createHive(newHive.latitude,newHive.longtitude,newHive.hiveType,newHive.description,newHive.comments,returnedUser._id);
+    const u2 = await hiveTracker.createHive(newHive.latitude,newHive.longtitude,newHive.hiveType,newHive.description,newHive.comments,returnedUser._id);
     
     const allHiveCount = await hiveTracker.getHives();
     var allHivesByUser = await hiveTracker.getHiveByOwner(returnedUser._id);
@@ -68,20 +69,23 @@ suite("Hive API tests", function () {
   });
 
   test("create a hive", async function () {
-    const returnedHive = await hiveTracker.createHive(newHive);
-    assert(_.some([returnedHive], newHive), "returnedHive must be a superset of newHive");
-    assert.isDefined(returnedHive._id, "not equal");
-    assert.isDefined(returnedHive.details[0]._id,"object");
+    const returnedHive = await hiveTracker.createHive(newHive.latitude,newHive.longtitude,newHive.hiveType,newHive.description,newHive.comments,returnedUser._id);
+    assert.deepEqual(returnedHive.latitude,newHive.latitude);
+    assert.deepEqual(returnedHive.longtitude,newHive.longtitude);
+    assert.deepEqual(returnedHive.hiveType,newHive.hiveType);
+    assert.deepEqual(returnedHive.description,newHive.description);
+    assert.deepEqual(returnedHive.details[0].comments,newHive.comments);
+    assert.deepEqual(returnedHive.owner,returnedUser._id);
   });
 
   test("get hive", async function () {
-    const u1 = await hiveTracker.createHive(newHive);
+    const u1 = await hiveTracker.createHive(newHive.latitude,newHive.longtitude,newHive.hiveType,newHive.description,newHive.comments,returnedUser._id);
     const u2 = await hiveTracker.getHive(u1._id);
     assert.deepEqual(u1, u2);
   });
 
   test("Add comments", async function () {
-    const u1 = await hiveTracker.createHive(newHive);
+    const u1 = await hiveTracker.createHive(newHive.latitude,newHive.longtitude,newHive.hiveType,newHive.description,newHive.comments,returnedUser._id);
     const origCommentCount = u1.details.length;
     const addComment = await hiveTracker.addHiveComment(u1._id, u1.details[0].comments);
     const u2 = await hiveTracker.getHive(u1._id);
@@ -92,7 +96,7 @@ suite("Hive API tests", function () {
   });
 
   test("Delete comments", async function () {
-    const u1 = await hiveTracker.createHive(newHive);
+    const u1 = await hiveTracker.createHive(newHive.latitude,newHive.longtitude,newHive.hiveType,newHive.description,newHive.comments,returnedUser._id);
     const id = u1.details[0]._id;
     const deletedComment = await hiveTracker.deleteHiveComment(u1._id, id);
     const u2 = await hiveTracker.getHive(u1._id);
@@ -109,7 +113,7 @@ suite("Hive API tests", function () {
   });
 
   test("delete a hive", async function () {
-    let u = await hiveTracker.createHive(newHive);
+    let u = await hiveTracker.createHive(newHive.latitude,newHive.longtitude,newHive.hiveType,newHive.description,newHive.comments,returnedUser._id);
     assert(u._id != null);
     await hiveTracker.deleteOneHive(u._id);
     u = await hiveTracker.getHive(u._id);
@@ -118,36 +122,8 @@ suite("Hive API tests", function () {
   });
 
 
-
-  test("get hives detail", async function () {
-    const hive = await hiveTracker.createHive(newHive);
-    for (let u of hives) {
-      await hiveTracker.createHive(u);
-    }
-
-    const testHive = {
-      latitude: hive.latitude,
-      longtitude: hive.longtitude,
-      hiveType: hive.hiveType,
-      description: hive.description,
-      details: hive.details,
-
-    };
-    hives.unshift(testHive);
-    const allHives = await hiveTracker.getHives();
-    for (var i = 0; i < hives.length; i++) {
-      assert.deepEqual(allHives[i].latitude,hives[i].latitude);
-      assert.deepEqual(allHives[i].longtitude,hives[i].longtitude);
-      assert.deepEqual(allHives[i].hiveType,hives[i].hiveType);
-      assert.deepEqual(allHives[i].description,hives[i].description);
-      assert.deepEqual(allHives[i].details[0].comments,hives[i].details[0].comments);
-      
-    };
-    
-  });
-
   test("Delete all hives", async function () {
-    const hive = await hiveTracker.createHive(newHive);
+    const hive = await hiveTracker.createHive(newHive.latitude,newHive.longtitude,newHive.hiveType,newHive.description,newHive.comments,returnedUser._id);
     const allHives = await hiveTracker.getHives();
     assert.equal(allHives.length, 1);
   });
