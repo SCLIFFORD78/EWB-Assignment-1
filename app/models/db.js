@@ -41,7 +41,7 @@ async function seed() {
   console.log(dbData);
 }
 
- db.once("open", function () {
+/*  db.once("open", function () {
   console.log(`database connected to ${this.name} on ${this.host}`);
   seed();
-}); 
+});  */
