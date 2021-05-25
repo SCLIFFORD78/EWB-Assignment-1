@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 exports.createToken = function (user) {
-  return jwt.sign({ id: user._id, email: user.email }, "secretpasswordnotrevealedtoanyone", {
+  return jwt.sign({ id: user._id, email: user.email }, process.env.secret, {
     algorithm: "HS256",
     expiresIn: "1h",
   });
@@ -11,7 +11,7 @@ exports.createToken = function (user) {
 exports.decodeToken = function (token) {
   var userInfo = {};
   try {
-    var decoded = jwt.verify(token, "secretpasswordnotrevealedtoanyone");
+    var decoded = jwt.verify(token, process.env.secret);
     userInfo.userId = decoded.id;
     userInfo.email = decoded.email;
   } catch (e) {}
@@ -33,7 +33,7 @@ exports.getUserIdFromRequest = function (request) {
   try {
     const authorization = request.headers.authorization;
     var token = authorization.split(" ")[1];
-    var decodedToken = jwt.verify(token, "secretpasswordnotrevealedtoanyone");
+    var decodedToken = jwt.verify(token, process.env.secret);
     userId = decodedToken.id;
   } catch (e) {
     userId = null;

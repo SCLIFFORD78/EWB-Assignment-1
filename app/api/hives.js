@@ -111,6 +111,7 @@ const Hives = {
     },
     handler: async function (request, h) {
       const hive = await Hive.deleteOne({ _id: request.params.id });
+    
       try {
         await Cloudinary.deleteUploadPreset(request.params.id);
       } catch (error) {
